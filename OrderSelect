@@ -1,0 +1,85 @@
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Button;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+
+public class PlaceOrderPane extends Application {
+	
+	public void start(Stage stage) {
+	
+		
+		BorderPane bPane = new BorderPane();
+		GridPane gPane = new GridPane();
+		
+		GridPane gPaneCenter = new GridPane();
+		GridPane gPaneTop = new GridPane();
+				
+		bPane.setPadding(new Insets(10, 10, 10, 10));
+		gPane.setAlignment(Pos.CENTER);
+
+		
+		Label lblName = new Label("[Name]");
+		Label lblPhone = new Label("[Phone]");
+		Label lblAddress = new Label("[Address]");
+		
+		gPaneTop.add(lblName, 0, 0);
+		gPaneTop.add(lblPhone, 0, 1);
+		gPaneTop.add(lblAddress, 0, 2);
+		
+		gPaneTop.setHgap(10);
+		gPaneTop.setVgap(10);
+		gPaneTop.setAlignment(Pos.CENTER);
+		bPane.setTop(gPaneTop);
+		
+		
+		CheckBox cbPep = new CheckBox("Pepperoni");
+		CheckBox cbSup = new CheckBox("Supreme");
+		CheckBox cbHaw = new CheckBox("Hawaiian");
+		CheckBox cbMlv = new CheckBox("Meat Lover");
+		CheckBox cbTch = new CheckBox("Three Cheese");
+		CheckBox cbCre = new CheckBox("Create Your Own");
+		
+		gPaneCenter.add(cbPep, 0, 0);
+		gPaneCenter.add(cbSup, 0, 1);
+		gPaneCenter.add(cbHaw, 0, 2);
+		gPaneCenter.add(cbMlv, 0, 3);
+		gPaneCenter.add(cbTch, 0, 4);
+		gPaneCenter.add(cbCre, 0, 5);
+		
+		gPaneCenter.setHgap(10);
+		gPaneCenter.setVgap(10);
+		gPaneCenter.setAlignment(Pos.CENTER);
+		
+		bPane.setCenter(gPaneCenter);
+		
+		Button btNext = new Button("Next");
+		Button btBack = new Button("Back");
+		gPane.add(btNext, 2, 0);
+		gPane.add(btBack, 0, 0);
+		
+		gPane.setHgap(10);
+		gPane.setVgap(10);
+		
+		bPane.setBottom(gPane);
+		
+		Scene scene = new Scene(bPane, 500, 500);
+		
+		stage.setScene(scene);
+		stage.setTitle("PlaceOrderPane");
+		stage.show();
+		
+	}
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+	
+}
