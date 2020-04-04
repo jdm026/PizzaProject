@@ -1,0 +1,194 @@
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+
+public class MCustomMenu extends Application {
+	
+	public void start(Stage stage)
+	{
+		// Size Price's
+		Label lblSize = new Label("Size: ");
+		Label lblS = new Label("Small");
+		Label lblM = new Label("Medium");
+		Label lblL = new Label("Large");
+		
+		TextField tfS = new TextField("$X.XX");
+		TextField tfM = new TextField("$X.XX");
+		TextField tfL = new TextField("$X.XX");
+		
+		tfS.setPrefWidth(100);
+		tfM.setPrefWidth(100);
+		tfL.setPrefWidth(100);
+		
+		GridPane gSize = new GridPane();
+		gSize.add(lblS, 0, 0);
+		gSize.add(tfS, 0, 1);
+		gSize.add(lblM, 3, 0);
+		gSize.add(tfM, 3, 1);
+		gSize.add(lblL, 6, 0);
+		gSize.add(tfL, 6, 1);
+		
+		gSize.setHgap(2);
+		gSize.setVgap(2);
+		
+		// Crust Price's
+		Label lblCrust = new Label("Crust: ");	
+		Label lblHand = new Label("Hand Tossed");
+		Label lblThin = new Label("Thin");
+		Label lblStuf = new Label("Stuffed Crust");
+		
+		TextField tfHand = new TextField("$X.XX");
+		TextField tfThin = new TextField("$X.XX");
+		TextField tfStuf = new TextField("$X.XX");
+		
+		tfHand.setPrefWidth(100);
+		tfThin.setPrefWidth(100);
+		tfStuf.setPrefWidth(100);
+		
+		GridPane gCrust = new GridPane();
+		gCrust.add(lblHand, 0, 0);
+		gCrust.add(tfHand, 0, 1);
+		gCrust.add(lblThin, 3, 0);
+		gCrust.add(tfThin, 3, 1);
+		gCrust.add(lblStuf, 6, 0);
+		gCrust.add(tfStuf, 6, 1);
+		
+		gCrust.setHgap(2);
+		gCrust.setVgap(2);
+		
+		// Cheese Price's
+		Label lblC = new Label("Cheese: ");
+		Label lblXCh = new Label("Extra Cheese");
+		Label lblMoz = new Label("Mozarella");
+		Label lblParm = new Label("Parmessean");
+		
+		TextField tfXCh = new TextField("$X.XX");
+		TextField tfMoz = new TextField("$X.XX");
+		TextField tfParm = new TextField("$X.XX");
+		
+		tfXCh.setPrefWidth(100);
+		tfMoz.setPrefWidth(100);
+		tfParm.setPrefWidth(100);
+		
+		GridPane gCheese = new GridPane();
+		gCheese.add(lblXCh, 0, 0);
+		gCheese.add(tfXCh, 0, 1);
+		gCheese.add(lblMoz, 1, 0);
+		gCheese.add(tfMoz, 1, 1);
+		gCheese.add(lblParm, 2, 0);
+		gCheese.add(tfParm, 2, 1);
+		
+		gCheese.setHgap(2);
+		gCheese.setVgap(2);
+		
+		// Meat Topping
+		Label lblMTop = new Label("Meat Toppings: ");
+		Label lblMTwoTop = new Label("Two Toppings");
+		Label lblMThrTop = new Label("Three Toppings");
+		
+		TextField tfMTwoTop = new TextField("$X.XX");
+		TextField tfMThrTop = new TextField("$X.XX");
+		
+		tfMTwoTop.setPrefWidth(100);
+		tfMThrTop.setPrefWidth(100);
+		
+		GridPane gMeat = new GridPane();
+		gMeat.add(lblMTwoTop, 0, 0);
+		gMeat.add(tfMTwoTop, 0, 1);
+		gMeat.add(lblMThrTop, 1, 0);
+		gMeat.add(tfMThrTop, 1, 1);
+		
+		gMeat.setHgap(2);
+		gMeat.setVgap(2);
+		
+		// Vegetable Topping
+		Label lblVeg = new Label("Veggetable Toppings: ");
+		Label lblVTwoTop = new Label("Two Toppings");
+		Label lblVThrTop = new Label("Three Toppings");
+		
+		TextField tfVTwoTop = new TextField("$X.XX");
+		TextField tfVThrTop = new TextField("$X.XX");
+		
+		tfVTwoTop.setPrefWidth(100);
+		tfVThrTop.setPrefWidth(100);
+		
+		GridPane gVeg = new GridPane();
+		gVeg.add(lblVTwoTop, 0, 0);
+		gVeg.add(tfVTwoTop, 0, 1);
+		gVeg.add(lblVThrTop, 1, 0);
+		gVeg.add(tfVThrTop, 1, 1);
+		
+		gVeg.setHgap(2);
+		gVeg.setVgap(2);
+		
+		// Beverage
+		Label lblBev = new Label("Beverage: ");
+		Label lblBTwo = new Label("2-Liter");
+		
+		TextField tfBTwo = new TextField("$X.XX");
+		
+		tfBTwo.setPrefWidth(100);
+		
+		GridPane gBev = new GridPane();
+		gBev.add(lblBTwo, 0, 0);
+		gBev.add(tfBTwo, 0, 1);
+		
+		gBev.setHgap(2);
+		gBev.setVgap(2);
+		
+		// Button Operations
+		Button btBack = new Button("Back");
+		Button btSub = new Button("Submit");
+		
+		GridPane gBottom = new GridPane();
+		gBottom.add(btBack, 0, 0);
+		gBottom.add(btSub, 3, 0);
+		gBottom.setHgap(30);
+		gBottom.setVgap(10);
+		
+		// Add Nodes to gridPane
+		GridPane gMain = new GridPane();
+		gMain.add(lblSize, 0, 0);
+		gMain.add(gSize, 1, 0);
+		gMain.add(lblCrust, 0, 1);
+		gMain.add(gCrust, 1, 1);
+		gMain.add(lblC, 0, 2);
+		gMain.add(gCheese, 1, 2);
+		gMain.add(lblMTop, 0, 3);
+		gMain.add(gMeat, 1, 3);
+		gMain.add(lblVeg, 0, 4);
+		gMain.add(gVeg, 1, 4);
+		gMain.add(lblBev, 0, 5);
+		gMain.add(gBev, 1, 5);
+		gMain.add(gBottom, 1, 9);
+	
+		gMain.setHgap(5);
+		gMain.setVgap(5);
+		
+		ScrollPane scroll = new ScrollPane();
+		scroll.setContent(gMain);
+		
+		Scene scene = new Scene(scroll, 500, 500);
+		
+		stage.setTitle("Menu Customization");
+		stage.setScene(scene);
+		stage.show();
+	
+	}
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+}
