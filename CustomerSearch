@@ -1,0 +1,59 @@
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Button;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+
+public class MCustomerSearch extends Application {
+	
+	public void start(Stage stage) {
+		
+		BorderPane bpane = new BorderPane();
+		GridPane gpane = new GridPane();
+		GridPane gpane2 = new GridPane();
+		
+		bpane.setPadding(new Insets(10, 10, 10, 10));
+		gpane.setHgap(5);
+		gpane.setVgap(5);
+		gpane.setAlignment(Pos.CENTER);
+		
+		gpane2.setHgap(5);
+		gpane2.setVgap(5);
+		
+		Label phone = new Label("Phone Number:");
+		TextField entry = new TextField();
+		Button srch = new Button("Search");
+		Button cncl = new Button("Cancel");
+		
+		
+		gpane2.add(srch, 0, 0);
+		gpane2.add(cncl, 1, 0);
+		
+		gpane.add(phone, 0, 0);
+		gpane.add(entry, 1, 0);
+		gpane.add(gpane2, 1, 1);
+		
+		bpane.setCenter(gpane);
+		
+		Scene scene = new Scene(bpane, 500, 500);
+		
+		stage.setScene(scene);
+		stage.setTitle("Customer Search");
+		stage.show();
+		
+	}
+	
+	public static void main(String[] args)
+	{
+		launch(args);
+	}
+	
+}
