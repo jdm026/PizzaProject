@@ -1,0 +1,71 @@
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Button;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+
+public class Receipt extends Application
+{
+	
+	public void start(Stage stage) {
+	
+		BorderPane bPane = new BorderPane();
+	//	GridPane gPane = new GridPane();
+		
+		GridPane gPaneCenter = new GridPane();
+		GridPane gPaneBottom = new GridPane();
+				
+		bPane.setPadding(new Insets(10, 10, 10, 10));
+	//	gPane.setAlignment(Pos.CENTER);
+
+		
+		Label dorp = new Label("[Delivery/Pickup]");
+		Label cname = new Label("[Customer Name]");
+		Label cadd = new Label("[Customer Address]");
+		Label amnt = new Label("[Amount]");
+		Label date = new Label("[Date]");
+		Label item = new Label("[Items Ordered]");
+		Label pmtp = new Label("[Payment Method]");
+		
+		Button prnt = new Button("Print");
+		Button rtrn = new Button("Return To Main");
+		
+		gPaneCenter.add(dorp, 0, 0);
+		gPaneCenter.add(cname, 0, 1);
+		gPaneCenter.add(cadd, 0, 2);
+		gPaneCenter.add(amnt, 0, 3);
+		gPaneCenter.add(date, 0, 4);
+		gPaneCenter.add(item, 0, 5);
+		gPaneCenter.add(pmtp, 0, 6);
+		gPaneCenter.add(prnt, 1, 7);
+		gPaneCenter.add(rtrn, 0, 7);
+		
+		gPaneCenter.setHgap(10);
+		gPaneCenter.setVgap(10);
+		gPaneCenter.setAlignment(Pos.CENTER);
+		bPane.setTop(gPaneCenter);
+		
+		gPaneBottom.setHgap(10);
+		gPaneBottom.setVgap(10);
+		gPaneBottom.setAlignment(Pos.CENTER);
+		
+		bPane.setCenter(gPaneBottom);
+		
+		Scene scene = new Scene(bPane, 500, 500);
+		
+		stage.setScene(scene);
+		stage.setTitle("Receipt");
+		stage.show();	
+		
+	}
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+	
+}
