@@ -1,0 +1,63 @@
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+
+public class MCustomerInfo extends Application {
+	
+	public void start(Stage stage) {
+		
+		BorderPane bpane = new BorderPane();
+		GridPane gpane = new GridPane();
+		
+		gpane.setHgap(5);
+		gpane.setVgap(5);
+		gpane.setAlignment(Pos.CENTER);
+		
+		Label lblName = new Label("[Name]");
+		Label lblPhone = new Label("[Phone]");
+		Label lblAddress = new Label("[Address]");
+		Label lblArea = new Label("Description: ");
+		
+		TextArea tx = new TextArea();
+		tx.setPrefHeight(40);
+		tx.setPrefWidth(200);
+		tx.setWrapText(true);
+		
+		Button view = new Button("View Transaction History");
+		Button rtrn = new Button("Return");
+		
+		gpane.add(lblName, 0, 0);
+		gpane.add(lblPhone, 0, 1);
+		gpane.add(lblAddress, 0, 2);
+		gpane.add(lblArea, 0, 3);
+		gpane.add(tx, 0, 4);
+		gpane.add(view, 0, 5);
+		gpane.add(rtrn, 0, 6);
+		
+		bpane.setCenter(gpane);
+		
+		Scene scene = new Scene(bpane, 500, 500);
+		
+		stage.setTitle("View Customer Information");
+		stage.setScene(scene);
+		stage.show();
+		
+	}
+	
+	public static void main(String[] args) {
+		
+		launch(args);
+		
+	}
+	
+}
