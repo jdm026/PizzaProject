@@ -1,0 +1,57 @@
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.geometry.Pos;
+
+public class TransactionHistory extends Application {
+
+	public void start(Stage stage) {
+		
+		Label cust = new Label("[Customer Name]");
+		Label phne = new Label("[Phone Number]");
+		
+		Button date1 = new Button("Date 1");
+		Button date2 = new Button("Date 2");
+		Button daten = new Button("Date n");
+		
+		BorderPane bpane = new BorderPane();
+		GridPane gPaneTop = new GridPane();
+		GridPane gPaneCenter = new GridPane();
+		
+		gPaneTop.add(cust, 0, 0);
+		gPaneTop.add(phne, 0, 1);
+		gPaneCenter.add(date1, 0, 0);
+		gPaneCenter.add(date2, 0, 1);
+
+		gPaneCenter.add(daten, 0, 2);
+		
+		gPaneCenter.setHgap(5);
+		gPaneCenter.setVgap(5);
+		gPaneCenter.setAlignment(Pos.CENTER);
+		
+		gPaneTop.setHgap(5);
+		gPaneTop.setVgap(5);
+		gPaneTop.setAlignment(Pos.CENTER);
+		
+		bpane.setTop(gPaneTop);
+		bpane.setCenter(gPaneCenter);
+		
+		Scene scene = new Scene(bpane,500, 500);
+		
+		stage.setScene(scene);
+		stage.setTitle("Transaction History");
+		stage.show();
+		
+	}
+	
+	public static void main(String[] args){
+		
+		launch(args);
+		
+	}
+	
+}
