@@ -1,0 +1,1693 @@
+
+import java.awt.Font;
+import java.text.NumberFormat;
+
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.CheckBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.text.Text;
+import javafx.scene.text.*;
+import javafx.scene.paint.Color;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
+
+
+public class Base extends Application{
+
+	//Class variables
+	// Initial menu item prices
+	static double priceSmall = 4.0;
+	static double priceMedium = 6.0;
+	static double priceLarge = 8.0;
+	static double priceXLarge = 10.0;
+	static double priceCrustThin = 1.5;
+	static double priceCrustStuff = 2.0;
+	static double priceCheeseExtra = 1.0;
+	static double priceCheeseMoz = 1.50;
+	static double priceMeatTwo = 2.00;
+	static double priceMeatThree = 3.00;
+	static double priceVegTwo = 1.00;
+	static double priceVegThree = 2.00;
+	static double priceBevSmall = 2.00;
+	static double priceBevMedium = 2.50;
+	static double priceBevLarge = 3.00;
+	static double priceDeliv = 6.00;
+
+	// Use the customer and manager variables to
+	// initialize customer and manager objects
+	static String custName = "[Name]";
+	static String custPhone = "[Phone number]";
+	static String custAddress = "[Address]";
+	
+	static String custAddDesc = "Address Description";
+	static String custCardName = "Card Name";
+	static String custCardNum = "Card Number";
+	static String custCardExp = "Card Experiation";
+	static String custSecCod = "Card Security Code";
+	static String custAccount = "Account Number";
+	static String custRoute = "Routing Number";
+	
+	static String managerName = "*Name*";
+	static String managerPass = "*Password*";	
+	
+	// Variables used to initialize and print receipt
+	static String orderSize = "Receipt Size";
+	static String orderCrust = "Receipt Crust";
+	static String orderCheese1 = "Receipt Cheese1";
+	static String orderCheese2 = "Receipt Cheese2";
+	static String orderMeat1 = "Receipt Meat Topping 1";
+	static String orderMeat2 = "Receipt Meat Topping 2";
+	static String orderVeg1 = "Receipt Vegetable Topping 1";
+	static String orderVeg2 = "Receipt Vegetable Topping 2";
+	
+	// Class stage
+	static Stage stageTitle = new Stage();
+	
+	// Stores topping sizes to control max toppings
+	static int meatTopCount = 0;
+	static int vegTopCount = 0;
+	static int cheeseTopCount = 0;
+	static int topCount;
+	
+	public void start(Stage stage)
+	{		
+	
+		GridPane loginPane = login();
+		
+		Scene scene = new Scene(loginPane, 800, 800);
+		//Scene scene = new Scene(orderMenuCustom(), 800, 800);
+		
+		stageTitle.setScene(scene);
+		stageTitle.setTitle("Pizza Project Sprint 2");
+		stageTitle.show();
+		
+	}
+
+	// Customer/Manager Login Pane
+	// 1.) Customer Login
+	// 2.) Customer Register
+	// 3.) Manager Login
+	// 4.) Manager Register
+	public GridPane login()
+	{
+		stageTitle.setTitle("Pizza Project Sprint 2 - Login Screen");
+		
+		// Grid Panes to hold TextFields, Labels, Buttons, & CheckBox
+		GridPane gPane = new GridPane();
+		GridPane gPane2 = new GridPane();
+				
+		// Labels, TextFields, Buttons, CheckBox
+		Label lblLogin = new Label("Phone Number:");
+		Label lblPassword = new Label("Password:");
+				
+		TextField tfLogin = new TextField();
+		TextField tfPassword = new TextField();
+				
+		Button btLogin = new Button("Login");
+		Button btRegister = new Button("Register");
+				
+		CheckBox cbManager = new CheckBox("Management");
+				
+		// Set the control variables into the panes
+		gPane.setAlignment(Pos.CENTER);
+				
+		gPane.setPadding(new Insets(5, 5, 5, 5));
+		gPane.setHgap(10);
+		gPane.setVgap(10);
+				
+		gPane.add(lblLogin, 0, 0);
+		gPane.add(tfLogin, 1, 0);
+		gPane.add(lblPassword, 0, 1);
+		gPane.add(tfPassword, 1, 1);
+				
+		gPane2.setAlignment(Pos.BASELINE_LEFT);
+		gPane2.setPadding(new Insets(5, 5, 5, 5));
+		gPane2.setHgap(5);
+		gPane2.setVgap(5);
+		gPane2.add(btLogin, 0, 0);
+		gPane2.add(btRegister, 1, 0);
+		gPane2.add(cbManager, 2, 0);
+				
+		gPane.add(gPane2, 1, 2);
+				
+		// Handle Login Text Field with manager check box action
+		cbManager.setOnAction(loginExtField -> {
+			
+			if (cbManager.isSelected())
+				tfLogin.setEditable(false);
+			else
+				tfLogin.setEditable(true);
+			
+		});
+		
+		// Handle login action
+		btLogin.setOnAction(loginSelected -> {
+				
+			if (cbManager.isSelected()) {
+				
+				
+				
+				// Test button will display the next screen (manager home)
+				gPane.getChildren().clear();
+				gPane.add(managerHome(), 0, 0);
+					
+			}
+			else{
+				
+				// Test button will display the next screen (customer home)
+				gPane.getChildren().clear();
+				gPane.add(customerHome(), 0, 0);
+			}
+				
+		});
+			
+		// Handle register action
+		btRegister.setOnAction( registerSelected -> {
+				
+			if (cbManager.isSelected()){
+					
+				// Display Manager Register Screen
+				gPane.getChildren().clear();
+				gPane.add(managerRegister(), 0, 0);
+					
+			}
+			else{
+				
+				// Test button will display the next screen (customer home)
+				gPane.getChildren().clear();
+				gPane.add(customerRegister(), 0, 0);
+				}
+				
+		});
+				
+		return gPane;
+	}
+	
+	// Return Customer Info
+	public GridPane customerInfoDuringOrder()
+	{
+		GridPane gTop = new GridPane();
+		
+		gTop.setVgap(10);
+		gTop.setAlignment(Pos.TOP_CENTER);
+		
+		// Customer Labels
+		// 1.) Receive input from parameter and initialize new label
+		Label lblName = new Label(custName);
+		Label lblPhone = new Label(custPhone);
+		Label lblAddress = new Label(custAddress);
+		
+		// Header Grid Pain - add labels
+		gTop.add(lblName, 0, 0);
+		gTop.add(lblPhone, 0, 1);
+		gTop.add(lblAddress, 0, 2);
+		
+		return gTop;
+		
+	}
+	
+	// Returns Customer Home Screen
+	// 1.) Place Order Handler
+	// 2.) View/Edit Account Handler
+	// 3.) Transaction History Handler
+	// 4.) Log Out Handler
+	public BorderPane customerHome()
+	{
+		stageTitle.setTitle("Pizza Project Sprint 2 - Customer Home Screen");
+		
+		Button btOrder = new Button("Place Order");
+		Button btView = new Button("View/Edit Account Info");
+		Button btTrans = new Button("Transaction History");
+		Button btOut = new Button("Log Out");
+		
+		GridPane gPane = new GridPane();
+		BorderPane bPane = new BorderPane();
+		
+		gPane.setHgap(5);
+		gPane.setVgap(5);
+		gPane.setAlignment(Pos.CENTER);
+		
+		gPane.add(btOrder, 0, 0);
+		gPane.add(btView, 0, 2);
+		gPane.add(btTrans, 0, 4);
+		gPane.add(btOut, 0, 6);
+		
+		bPane.setCenter(gPane);
+		
+		// Event handler for place order button
+		btOrder.setOnAction(placeOrderButton -> {
+			
+			// Clear grid pane and insert place order pane
+			bPane.getChildren().clear();
+			bPane.setCenter(orderMenuCustom());
+			
+		});
+		
+		// Event handler for view/edit button
+		btView.setOnAction(viewButton -> {
+			
+			bPane.getChildren().clear();
+			bPane.setCenter(customerViewEdit());
+			
+		});
+		
+		// Event handler for transaction class
+		btTrans.setOnAction(transactionButton -> {
+			
+			bPane.getChildren().clear();
+			bPane.setCenter(customerHistory());
+			
+		});
+		
+		btOut.setOnAction(logoutPressed -> {
+			
+			bPane.getChildren().clear();
+			bPane.setCenter(login());
+			
+		});
+		
+		return bPane;
+		
+	}
+	
+	// Returns Manager Home Screen
+	// 1.) Menu Customization Handler
+	// 2.) Customer Info Handler
+	// 3.) Log Out Handler
+	public BorderPane managerHome()
+	{
+		stageTitle.setTitle("Pizza Project Sprint 2 - Manager Home Screen - Manager: " + managerName);
+		
+		BorderPane bpane = new BorderPane();
+		GridPane gpane = new GridPane();
+		
+		bpane.setPadding(new Insets(5, 5, 5, 5));
+		
+		Button menu = new Button("Menu Customization");
+		Button info = new Button("Customer Info");
+		Button logo = new Button ("Log Out");
+		
+		gpane.add(menu, 0, 1);
+		gpane.add(info, 0, 2);
+		gpane.add(logo, 0, 3);
+		
+		gpane.setAlignment(Pos.CENTER);
+		gpane.setHgap(10);
+		gpane.setVgap(10);
+		
+		bpane.setCenter(gpane);
+		bpane.setAlignment(gpane, Pos.CENTER);		
+		
+		// Event Handler for Menu Customization Button
+		menu.setOnAction(menuSelected -> {
+						
+			bpane.getChildren().clear();
+			bpane.setCenter(managerCustomMenu());
+						
+		});
+		
+		// Event Handler for Customer Information Search
+		info.setOnAction(infoSelected -> {
+				
+			bpane.getChildren().clear();
+			bpane.setCenter(managerCustomerSearch());
+				
+		});
+		
+		logo.setOnAction(logoutHandle -> {
+			
+			bpane.getChildren().clear();
+			bpane.setCenter(login());
+			
+		});
+		
+		return bpane;
+		
+	}
+	
+	// Returns Manager Customization Menu
+	// 1.) Submit Button
+	// 2.) Back Button 
+	public BorderPane managerCustomMenu()
+	{
+		stageTitle.setTitle("Pizza Project Sprint 2 - Manager Customize Menu Screen - Manager: " + managerName );
+		
+		NumberFormat formatter = NumberFormat.getCurrencyInstance();
+		
+		// Size Price's
+		Label lblSize = new Label("Size: ");
+		Label lblS = new Label("Small\n" + formatter.format(priceSmall));
+		Label lblM = new Label("Medium\n" + formatter.format(priceMedium));
+		Label lblL = new Label("Large\n" + formatter.format(priceLarge));
+		Label lblXL = new Label("Extra Large\n" + formatter.format(priceXLarge));
+		
+		TextField tfS = new TextField(String.valueOf(priceSmall));
+		TextField tfM = new TextField(String.valueOf(priceMedium));
+		TextField tfL = new TextField(String.valueOf(priceLarge));
+		TextField tfXL = new TextField(String.valueOf(priceXLarge));
+		
+		tfS.setPrefWidth(100);
+		tfM.setPrefWidth(100);
+		tfL.setPrefWidth(100);
+		tfXL.setPrefWidth(100);
+		
+		GridPane gSize = new GridPane();
+		gSize.add(lblS, 0, 0);
+		gSize.add(tfS, 0, 1);
+		gSize.add(lblM, 3, 0);
+		gSize.add(tfM, 3, 1);
+		gSize.add(lblL, 6, 0);
+		gSize.add(tfL, 6, 1);
+		gSize.add(lblXL, 9, 0);
+		gSize.add(tfXL, 9, 1);
+		
+			
+		gSize.setHgap(2);
+		gSize.setVgap(2);
+		
+		// Crust Price's
+		Label lblCrust = new Label("Crust: ");	
+		Label lblThin = new Label("Thin\n" + formatter.format(priceCrustThin));
+		Label lblStuff = new Label("Stuffed Crust\n" + formatter.format(priceCrustStuff));
+		
+		TextField tfThin = new TextField(String.valueOf(priceCrustThin));
+		TextField tfStuff = new TextField(String.valueOf(priceCrustStuff));
+		
+		tfThin.setPrefWidth(100);
+		tfStuff.setPrefWidth(100);		
+		
+		GridPane gCrust = new GridPane();
+		gCrust.add(lblThin, 0, 0);
+		gCrust.add(tfThin, 0, 1);
+		gCrust.add(lblStuff, 3, 0);
+		gCrust.add(tfStuff, 3, 1);
+		
+		gCrust.setHgap(2);
+		gCrust.setVgap(2);
+		
+		// Cheese Price's
+		Label lblC = new Label("Cheese: ");
+		Label lblXCh = new Label("Extra Cheese\n" + formatter.format(priceCheeseExtra));
+		Label lblMoz = new Label("Mozarella\n" + formatter.format(priceCheeseMoz));
+		
+		TextField tfXCh = new TextField(String.valueOf(priceCheeseExtra));
+		TextField tfMoz = new TextField(String.valueOf(priceCheeseMoz));
+				
+		tfXCh.setPrefWidth(100);
+		tfMoz.setPrefWidth(100);
+		
+		GridPane gCheese = new GridPane();
+		gCheese.add(lblXCh, 0, 0);
+		gCheese.add(tfXCh, 0, 1);
+		gCheese.add(lblMoz, 3, 0);
+		gCheese.add(tfMoz, 3, 1);
+		
+		gCheese.setHgap(2);
+		gCheese.setVgap(2);
+		
+		// Meat Topping
+		Label lblMTop = new Label("Meat Toppings: ");
+		Label lblMTwoTop = new Label("Two Toppings\n" + formatter.format(priceMeatTwo));
+		Label lblMThrTop = new Label("Three Toppings\n" + formatter.format(priceMeatThree));
+		
+		TextField tfMTwoTop = new TextField(String.valueOf(priceMeatTwo));
+		TextField tfMThrTop = new TextField(String.valueOf(priceMeatThree));
+		
+		tfMTwoTop.setPrefWidth(100);
+		tfMThrTop.setPrefWidth(100);
+		
+		GridPane gMeat = new GridPane();
+		gMeat.add(lblMTwoTop, 0, 0);
+		gMeat.add(tfMTwoTop, 0, 1);
+		gMeat.add(lblMThrTop, 3, 0);
+		gMeat.add(tfMThrTop, 3, 1);
+		
+		gMeat.setHgap(2);
+		gMeat.setVgap(2);
+		
+		// Vegetable Topping
+		Label lblVeg = new Label("Veggetable Toppings: ");
+		Label lblVTwoTop = new Label("Two Toppings\n" + formatter.format(priceVegTwo));
+		Label lblVThrTop = new Label("Three Toppings\n" + formatter.format(priceVegThree));
+		
+		TextField tfVTwoTop = new TextField(String.valueOf(priceVegTwo));
+		TextField tfVThrTop = new TextField(String.valueOf(priceVegThree));
+		
+		tfVTwoTop.setPrefWidth(100);
+		tfVThrTop.setPrefWidth(100);
+		
+		GridPane gVeg = new GridPane();
+		gVeg.add(lblVTwoTop, 0, 0);
+		gVeg.add(tfVTwoTop, 0, 1);
+		gVeg.add(lblVThrTop, 3, 0);
+		gVeg.add(tfVThrTop, 3, 1);
+		
+		gVeg.setHgap(2);
+		gVeg.setVgap(2);
+		
+		// Beverage
+		Label lblBev = new Label("Beverage: ");
+		Label lblBevSmall = new Label("Small\n" + formatter.format(priceBevSmall));
+		Label lblBevMed = new Label("Medium\n" + formatter.format(priceBevMedium));
+		Label lblBevLarge = new Label("Large\n" + formatter.format(priceBevLarge));
+		
+		TextField tfBevSmall = new TextField(String.valueOf(priceBevSmall));
+		TextField tfBevMed = new TextField(String.valueOf(priceBevMedium));
+		TextField tfBevLarge = new TextField(String.valueOf(priceBevLarge));
+		
+		tfBevSmall.setPrefWidth(100);
+		tfBevMed.setPrefWidth(100);
+		tfBevLarge.setPrefWidth(100);
+		
+		// Delivery Fee
+		Label lblDel = new Label("Delivery Fee: ");
+		Label lblFee = new Label("Fee\n" + formatter.format(priceDeliv));
+		TextField tfFee = new TextField(String.valueOf(priceDeliv));
+		
+		tfFee.setPrefWidth(100);
+		
+		GridPane gDel = new GridPane();
+		gDel.add(lblFee, 0, 0);
+		gDel.add(tfFee, 0, 1);
+		
+		
+		
+		
+		GridPane gBev = new GridPane();
+		gBev.add(lblBevSmall, 0, 0);
+		gBev.add(tfBevSmall, 0, 1);
+		gBev.add(lblBevMed, 3, 0);
+		gBev.add(tfBevMed, 3, 1);
+		gBev.add(lblBevLarge, 6, 0);
+		gBev.add(tfBevLarge, 6, 1);
+		
+		gBev.setHgap(2);
+		gBev.setVgap(2);
+
+		// Button Operations
+		Button btBack = new Button("Back");
+		Button btSub = new Button("Submit");
+		
+//User	The user must enter a double number without the dollar sign		
+		btSub.setOnAction(submitButton -> {
+			
+			// Update label value with entered double
+			priceSmall = Double.parseDouble(tfS.getText());
+			lblS.setText("Small\n" + formatter.format(priceSmall));
+
+			priceMedium = Double.parseDouble(tfM.getText());
+			lblM.setText("Medium\n" + formatter.format(priceMedium));
+			
+			priceLarge = Double.parseDouble(tfL.getText());
+			lblL.setText("Large\n" + formatter.format(priceLarge));
+			
+			priceXLarge = Double.parseDouble(tfXL.getText());
+			lblXL.setText("Extra Large\n" + formatter.format(priceXLarge));
+			
+			priceCrustThin = Double.parseDouble(tfThin.getText());
+			lblThin.setText("Thin\n" + formatter.format(priceCrustThin));
+			
+			priceCrustStuff = Double.parseDouble(tfStuff.getText());
+			lblStuff.setText("Stuffed Crust\n" + formatter.format(priceCrustStuff));
+			
+			priceCheeseExtra = Double.parseDouble(tfXCh.getText());
+			lblXCh.setText("Extra Cheese\n" + formatter.format(priceCheeseExtra));
+			
+			priceCheeseMoz = Double.parseDouble(tfMoz.getText());
+			lblMoz.setText("Mozarella\n" + formatter.format(priceCheeseMoz));
+			
+			priceMeatTwo = Double.parseDouble(tfMTwoTop.getText());
+			lblMTwoTop.setText("Two Toppings\n" + formatter.format(priceMeatTwo));
+			
+			priceMeatThree = Double.parseDouble(tfMThrTop.getText());
+			lblMThrTop.setText("Three Toppings\n" + formatter.format(priceMeatThree));
+			
+			priceVegTwo = Double.parseDouble(tfVTwoTop.getText());
+			lblVTwoTop.setText("Two Toppings\n" + formatter.format(priceVegTwo));
+			
+			priceVegThree = Double.parseDouble(tfVThrTop.getText());
+			lblVThrTop.setText("Three Toppings\n" + formatter.format(priceVegThree));
+			
+			priceBevSmall = Double.parseDouble(tfBevSmall.getText());
+			lblBevSmall.setText("Small\n" + formatter.format(priceBevSmall));
+	
+			priceBevMedium = Double.parseDouble(tfBevMed.getText());
+			lblBevMed.setText("Medium\n" + formatter.format(priceBevMedium));
+	
+			priceBevLarge = Double.parseDouble(tfBevLarge.getText());
+			lblBevLarge.setText("Large\n" + formatter.format(priceBevLarge));
+			
+			priceDeliv = Double.parseDouble(tfFee.getText());
+			lblFee.setText("Fee\n" + formatter.format(priceDeliv));			
+			
+		});
+		
+		
+		GridPane gBottom = new GridPane();
+		gBottom.add(btBack, 0, 0);
+		gBottom.add(btSub, 3, 0);
+		gBottom.setHgap(30);
+		gBottom.setVgap(10);
+		
+		// Add Nodes to gridPane
+		GridPane gMain = new GridPane();
+		gMain.add(lblSize, 0, 0);
+		gMain.add(gSize, 1, 0);
+		gMain.add(lblCrust, 0, 1);
+		gMain.add(gCrust, 1, 1);
+		gMain.add(lblC, 0, 2);
+		gMain.add(gCheese, 1, 2);
+		gMain.add(lblMTop, 0, 3);
+		gMain.add(gMeat, 1, 3);
+		gMain.add(lblVeg, 0, 4);
+		gMain.add(gVeg, 1, 4);
+		gMain.add(lblBev, 0, 5);
+		gMain.add(gBev, 1, 5);
+		gMain.add(lblDel, 0, 6);
+		gMain.add(gDel, 1, 6);
+		
+		gMain.add(gBottom, 1, 9);
+	
+		gMain.setHgap(5);
+		gMain.setVgap(5);
+		
+		BorderPane bPane = new BorderPane();
+		bPane.setCenter(gMain);
+		
+		btBack.setOnAction(backButtonPressed -> {
+			
+			
+			bPane.setCenter(managerHome());
+			
+		});
+		
+		return bPane;
+	}
+	
+	// Return Manager Customer Search Menu
+	// 1.) Search Phone Number
+	// 2.) Cancel Button To Manager Home
+	public BorderPane managerCustomerSearch()
+	{
+	
+		stageTitle.setTitle("Pizza Project Sprint 2 - Manager Customer Search Screen - Manager: " + managerName );
+		
+		BorderPane bpane = new BorderPane();
+		GridPane gpane = new GridPane();
+		GridPane gpane2 = new GridPane();
+		
+		bpane.setPadding(new Insets(10, 10, 10, 10));
+		gpane.setHgap(5);
+		gpane.setVgap(5);
+		gpane.setAlignment(Pos.CENTER);
+		
+		gpane2.setHgap(5);
+		gpane2.setVgap(5);
+		
+		Label phone = new Label("Phone Number:");
+		TextField entry = new TextField();
+		Button srch = new Button("Search");
+		Button cncl = new Button("Cancel");
+		
+		srch.setOnAction(searchButton -> {
+			
+			// Display Customer History Screen
+			bpane.getChildren().clear();
+			bpane.setCenter(customerHistoryManager());
+			
+		});
+		
+		cncl.setOnAction(cancelButton -> {
+			
+			// Display Manager Home Screen
+			bpane.getChildren().clear();
+			bpane.setCenter(managerHome());
+			
+		});
+		
+		gpane2.add(cncl, 0, 0);
+		gpane2.add(srch, 1, 0);
+		
+		gpane2.setHgap(10);
+		gpane2.setVgap(10);
+		
+		gpane.add(phone, 0, 0);
+		gpane.add(entry, 1, 0);
+		gpane.add(gpane2, 1, 1);
+		
+		gpane.setHgap(10);
+		gpane.setVgap(10);
+		
+		bpane.setCenter(gpane);
+		
+		return bpane;
+	}
+	
+	// Returns Customer View and Edit Information Screen
+	// 1.) Submit Button to update customer object
+	// 2.) Clear Button to reset text fields
+	// 3.) Cancel Button to return to customer home
+	public BorderPane customerViewEdit()
+	{
+		stageTitle.setTitle("Pizza Project Sprint 2 - Customer Information Screen");
+		
+		BorderPane bPane = new BorderPane();
+		GridPane gCenterPane = new GridPane();
+		GridPane gBottomPane = new GridPane();
+		GridPane gButton = new GridPane();
+			
+		gCenterPane.setVgap(5);
+		gCenterPane.setHgap(5);
+		gCenterPane.setAlignment(Pos.CENTER);
+			
+		gBottomPane.setVgap(10);
+		gBottomPane.setHgap(10);
+		gBottomPane.setAlignment(Pos.CENTER);
+			
+		gButton.setVgap(5);
+		gButton.setHgap(5);
+		gButton.setAlignment(Pos.CENTER);
+		
+		Label lblName = new Label("Name: ");
+		Label lblPhone = new Label("Phone Number: ");
+		Label lblAddr = new Label("Address:\n(Street, City, Zip)");
+		Label lblDesc = new Label("Address Desctription:");
+		Label lblPay = new Label("Payment Method: ");
+		Label lblCard = new Label("Card Information (if applicable)");
+		Label lblCName = new Label("Name On Card: ");
+		Label lblNum = new Label("Card Number: ");
+		Label lblExp = new Label("Exp Date: ");
+		Label lblSc = new Label("Security Code: ");
+		Label lblChk = new Label("Check Information (if applicable)");
+		Label lblANum = new Label("Account Number: ");
+		Label lblRNum = new Label("Routing Number: ");
+			
+		TextArea txDesc = new TextArea(custAddDesc);
+		txDesc.setPrefHeight(40);
+		txDesc.setPrefWidth(200);
+		txDesc.setWrapText(true);
+			
+		TextField tfName = new TextField(custName);
+		TextField tfPhone = new TextField(custPhone);
+		TextField tfAddr = new TextField(custAddress);
+		TextField tfCName = new TextField(custCardName);
+		TextField tfNum = new TextField(custCardNum);
+		TextField tfExp = new TextField(custCardExp);
+		TextField tfSc = new TextField(custSecCod);
+		TextField tfANum = new TextField(custAccount);
+		TextField tfRNum = new TextField(custRoute);
+			
+			
+		Button submit = new Button("Submit");
+		Button clear = new Button("Clear");
+		Button cancel = new Button("Cancel");
+			
+		CheckBox cash = new CheckBox("Cash");
+		CheckBox check = new CheckBox("Check");
+		CheckBox card = new CheckBox("Card");
+			
+		gButton.add(card, 0, 0);
+		gButton.add(cash, 1, 0);
+		gButton.add(check, 2, 0);
+			
+		gCenterPane.add(lblName, 0, 0);
+		gCenterPane.add(tfName, 1, 0);
+		gCenterPane.add(lblPhone, 0, 1);
+		gCenterPane.add(tfPhone, 1, 1);
+		gCenterPane.add(lblAddr, 0, 2);
+		gCenterPane.add(tfAddr, 1, 2);
+		gCenterPane.add(lblDesc, 0, 3);
+		gCenterPane.add(txDesc, 1, 3);
+		gCenterPane.add(lblPay, 0, 4);
+		gCenterPane.add(gButton, 1, 4);
+		gCenterPane.add(lblCard, 0, 5);
+		gCenterPane.add(lblCName, 0, 6);
+		gCenterPane.add(tfCName, 1, 6);
+		gCenterPane.add(lblNum, 0, 7);
+		gCenterPane.add(tfNum, 1, 7);
+		gCenterPane.add(lblExp, 0, 8);
+		gCenterPane.add(tfExp, 1, 8);
+		gCenterPane.add(lblSc, 0, 9);
+		gCenterPane.add(tfSc, 1, 9);
+		gCenterPane.add(lblChk, 0, 10);
+		gCenterPane.add(lblANum, 0, 11);
+		gCenterPane.add(tfANum, 1, 11);
+		gCenterPane.add(lblRNum, 0, 12);
+		gCenterPane.add(tfRNum, 1, 12);
+			
+			
+		gBottomPane.add(submit, 2, 0);
+		gBottomPane.add(clear, 1, 0);
+		gBottomPane.add(cancel, 0, 0);
+		
+		submit.setOnAction(submitButton -> {
+			
+		});
+		
+		clear.setOnAction(clearButton -> {
+			
+			tfName.clear();
+			tfPhone.clear();
+			tfAddr.clear();
+			tfCName.clear();
+			tfNum.clear();
+			tfExp.clear();
+			tfSc.clear();
+			tfANum.clear();
+			tfRNum.clear();
+			txDesc.clear();
+			
+		});
+		
+		cancel.setOnAction(cancelButton -> {
+			
+			bPane.getChildren().clear();
+			bPane.setCenter(customerHome());
+			
+		});
+		
+			
+		gBottomPane.setVgap(10);
+		gBottomPane.setHgap(10);	
+			
+		bPane.setCenter(gCenterPane);
+		bPane.setBottom(gBottomPane);
+			
+		return bPane;
+			
+	}
+	
+	// Returns Customer View and Edit Information Screen
+	// 1.) Submit button to create new customer object
+	// 2.) Clear Button to reset text fields
+	// 3.) Cancel Button to return to login screen
+	public BorderPane customerRegister()
+	{
+		stageTitle.setTitle("Pizza Project Sprint 2 - Customer Registration Screen");
+		
+		BorderPane bPane = new BorderPane();
+		GridPane gCenterPane = new GridPane();
+		GridPane gBottomPane = new GridPane();
+		GridPane gButton = new GridPane();
+				
+		gCenterPane.setVgap(5);
+		gCenterPane.setHgap(5);
+		gCenterPane.setAlignment(Pos.CENTER);
+				
+		gBottomPane.setVgap(10);
+		gBottomPane.setHgap(10);
+		gBottomPane.setAlignment(Pos.CENTER);
+				
+		gButton.setVgap(5);
+		gButton.setHgap(5);
+		gButton.setAlignment(Pos.CENTER);
+			
+		Label lblName = new Label("Name: ");
+		Label lblPhone = new Label("Phone Number: ");
+		Label lblAddr = new Label("Address:\n(Street, City, Zip)");
+		Label lblDesc = new Label("Address Desctription:");
+		Label lblPay = new Label("Payment Method: ");
+		Label lblCard = new Label("Card Information (if applicable)");
+		Label lblCName = new Label("Name On Card: ");
+		Label lblNum = new Label("Card Number: ");
+		Label lblExp = new Label("Exp Date: ");
+		Label lblSc = new Label("Security Code: ");
+		Label lblChk = new Label("Check Information (if applicable)");
+		Label lblANum = new Label("Account Number: ");
+		Label lblRNum = new Label("Routing Number: ");
+				
+		TextArea txDesc = new TextArea();
+		txDesc.setPrefHeight(40);
+		txDesc.setPrefWidth(200);
+		txDesc.setWrapText(true);
+				
+		TextField tfName = new TextField();
+		TextField tfPhone = new TextField();
+		TextField tfAddr = new TextField();
+		TextField tfCName = new TextField();
+		TextField tfNum = new TextField();
+		TextField tfExp = new TextField();
+		TextField tfSc = new TextField();
+		TextField tfANum = new TextField();
+		TextField tfRNum = new TextField();
+				
+				
+		Button submit = new Button("Submit");
+		Button clear = new Button("Clear");
+		Button cancel = new Button("Cancel");
+				
+		CheckBox cash = new CheckBox("Cash");
+		CheckBox check = new CheckBox("Check");
+		CheckBox card = new CheckBox("Card");
+				
+		gButton.add(card, 0, 0);
+		gButton.add(cash, 1, 0);
+		gButton.add(check, 2, 0);
+				
+		gCenterPane.add(lblName, 0, 0);
+		gCenterPane.add(tfName, 1, 0);
+		gCenterPane.add(lblPhone, 0, 1);
+		gCenterPane.add(tfPhone, 1, 1);
+		gCenterPane.add(lblAddr, 0, 2);
+		gCenterPane.add(tfAddr, 1, 2);
+		gCenterPane.add(lblDesc, 0, 3);
+		gCenterPane.add(txDesc, 1, 3);
+		gCenterPane.add(lblPay, 0, 4);
+		gCenterPane.add(gButton, 1, 4);
+		gCenterPane.add(lblCard, 0, 5);
+		gCenterPane.add(lblCName, 0, 6);
+		gCenterPane.add(tfCName, 1, 6);
+		gCenterPane.add(lblNum, 0, 7);
+		gCenterPane.add(tfNum, 1, 7);
+		gCenterPane.add(lblExp, 0, 8);
+		gCenterPane.add(tfExp, 1, 8);
+		gCenterPane.add(lblSc, 0, 9);
+		gCenterPane.add(tfSc, 1, 9);
+		gCenterPane.add(lblChk, 0, 10);
+		gCenterPane.add(lblANum, 0, 11);
+		gCenterPane.add(tfANum, 1, 11);
+		gCenterPane.add(lblRNum, 0, 12);
+		gCenterPane.add(tfRNum, 1, 12);
+				
+				
+		gBottomPane.add(submit, 2, 0);
+		gBottomPane.add(clear, 1, 0);
+		gBottomPane.add(cancel, 0, 0);
+			
+		submit.setOnAction(submitButton -> {
+			
+		});
+			
+		clear.setOnAction(clearButton -> {
+				
+			tfName.clear();
+			tfPhone.clear();
+			tfAddr.clear();
+			tfCName.clear();
+			tfNum.clear();
+			tfExp.clear();
+			tfSc.clear();
+			tfANum.clear();
+			tfRNum.clear();
+			txDesc.clear();
+				
+		});
+			
+		cancel.setOnAction(cancelButton -> {
+				
+			bPane.getChildren().clear();
+			bPane.setCenter(login());
+				
+		});
+			
+				
+		gBottomPane.setVgap(10);
+		gBottomPane.setHgap(10);	
+				
+		bPane.setCenter(gCenterPane);
+		bPane.setBottom(gBottomPane);
+				
+		return bPane;
+				
+	}
+	
+	// Returns Manager Register Screen
+	// 1.) Handle Button to create new manager object
+	// 2.) Back Button to return to customer home
+	public BorderPane managerRegister()
+	{
+		
+		stageTitle.setTitle("Pizza Project Sprint 2 - Manager Registration Screen");
+		
+		BorderPane bpane = new BorderPane();
+		GridPane gCenterPane = new GridPane();
+		GridPane gBottomPane = new GridPane();
+		GridPane gButtonPane = new GridPane();
+		
+		gCenterPane.setVgap(5);
+		gCenterPane.setHgap(5);
+		gCenterPane.setAlignment(Pos.CENTER);
+				
+		gBottomPane.setVgap(10);
+		gBottomPane.setHgap(10);
+		gBottomPane.setAlignment(Pos.CENTER);
+				
+		gButtonPane.setVgap(10);
+		gButtonPane.setHgap(10);
+		gButtonPane.setAlignment(Pos.CENTER);
+		
+		
+		
+		Label lblmanagerName = new Label("Enter Name: ");
+		Label lblmanagerPass = new Label("Enter Password: ");
+		
+		TextField tfmanagerName = new TextField(managerName);
+		TextField tfmanagerPass = new TextField(managerPass);
+		
+		gCenterPane.add(lblmanagerName, 0, 0);
+		gCenterPane.add(tfmanagerName, 1, 0);
+		gCenterPane.add(lblmanagerPass, 0, 1);
+		gCenterPane.add(tfmanagerPass, 1, 1);
+		
+		Button btSubmit = new Button("Submit");
+		Button btBack = new Button("Back");
+		
+		// Handle Back Button Event
+		btBack.setOnAction(backPressed -> {
+			
+			bpane.getChildren().clear();
+			bpane.setCenter(login());
+			
+		});
+		
+		// Handle Submit Button Event
+		btSubmit.setOnAction(submitPressed -> {
+			
+			managerName = tfmanagerName.getText();
+			managerPass = tfmanagerPass.getText();
+			
+			System.out.println(managerName + " added to system.");
+			
+			bpane.getChildren().clear();
+			bpane.setCenter(login());
+			
+		});
+		
+		gButtonPane.add(btBack, 0, 1);
+		gButtonPane.add(btSubmit, 1, 1);
+		
+		gBottomPane.add(gButtonPane, 0, 0);
+		
+		bpane.setCenter(gCenterPane);
+		bpane.setBottom(gBottomPane);
+		
+		
+		
+		return bpane;
+	}
+	
+	// Return Transaction History
+	// 1.) Date Buttons to hold receipt for customer object
+	// 2.) Back Button to return to customer home screen
+	public BorderPane customerHistory()
+	{
+		stageTitle.setTitle("Pizza Project Sprint 2 - Customer Transaction History Screen");
+		
+		Label cust = new Label(custName);
+		Label phne = new Label(custPhone);
+		
+		Button date1 = new Button("Date 1");
+		Button date2 = new Button("Date 2");
+		Button daten = new Button("Date n");
+		
+		Button btBack = new Button("Back");
+		GridPane space = new GridPane();
+		
+		space.add(btBack, 0, 1);
+		
+		space.setHgap(10);
+		space.setVgap(10);
+		space.setAlignment(Pos.CENTER);
+		
+		BorderPane bpane = new BorderPane();
+		GridPane gPaneTop = new GridPane();
+		GridPane gPaneCenter = new GridPane();
+		
+		gPaneTop.add(cust, 0, 0);
+		gPaneTop.add(phne, 0, 1);
+		gPaneCenter.add(date1, 0, 3);
+		gPaneCenter.add(date2, 0, 6);
+
+		gPaneCenter.add(daten, 0, 12);
+		
+		gPaneCenter.setHgap(10);
+		gPaneCenter.setVgap(10);
+		gPaneCenter.setAlignment(Pos.CENTER);
+		
+		gPaneTop.setHgap(10);
+		gPaneTop.setVgap(10);
+		gPaneTop.setAlignment(Pos.CENTER);
+		
+		bpane.setTop(gPaneTop);
+		bpane.setCenter(gPaneCenter);
+		bpane.setBottom(space);
+		
+		// Handle Button Action Event
+		btBack.setOnAction(backPressed -> {
+			
+			// Display Customer Home Screen
+			bpane.getChildren().clear();
+			bpane.setCenter(customerHome());
+			
+		});
+		
+		return bpane;
+		
+	}
+	
+	// Return Manager Customer Search History
+	// 1.) Date Buttons to hold receipt for customer object
+	// 2.) Back Button to return to manager home screen
+	public BorderPane customerHistoryManager()
+	{
+		stageTitle.setTitle("Pizza Project Sprint 2 - Customer Search Screen - Manager: " + managerName);
+		
+		Label cust = new Label(custName);
+		Label phne = new Label(custPhone);
+		
+		Button date1 = new Button("Date 1");
+		Button date2 = new Button("Date 2");
+		Button daten = new Button("Date n");
+		
+		Button btBack = new Button("Back");
+		GridPane space = new GridPane();
+		
+		space.add(btBack, 0, 1);
+		
+		space.setHgap(10);
+		space.setVgap(10);
+		space.setAlignment(Pos.CENTER);
+		
+		BorderPane bpane = new BorderPane();
+		GridPane gPaneTop = new GridPane();
+		GridPane gPaneCenter = new GridPane();
+		
+		gPaneTop.add(cust, 0, 0);
+		gPaneTop.add(phne, 0, 1);
+		gPaneCenter.add(date1, 0, 3);
+		gPaneCenter.add(date2, 0, 6);
+
+		gPaneCenter.add(daten, 0, 12);
+		
+		gPaneCenter.setHgap(10);
+		gPaneCenter.setVgap(10);
+		gPaneCenter.setAlignment(Pos.CENTER);
+		
+		gPaneTop.setHgap(10);
+		gPaneTop.setVgap(10);
+		gPaneTop.setAlignment(Pos.CENTER);
+		
+		bpane.setTop(gPaneTop);
+		bpane.setCenter(gPaneCenter);
+		bpane.setBottom(space);
+		
+		// Handle Button Action Event
+		btBack.setOnAction(backPressed -> {
+			
+			// Display Customer Home Screen
+			bpane.getChildren().clear();
+			bpane.setCenter(managerHome());
+			
+		});
+		
+		return bpane;
+		
+	}
+	
+	// Return Order menu
+	// 1.) Submit button to process order
+	// 2.) Back button to return to home screen
+	public BorderPane orderMenuCustom()
+	{
+		
+		stageTitle.setTitle("Pizza Project Sprint 2 - Order Menu Screen");
+		
+		// Border Pane and Grid Panes For Each Node
+		BorderPane bPane = new BorderPane();
+		GridPane gCenter = new GridPane();
+		GridPane gBottom = new GridPane();
+		GridPane gSize = new GridPane();
+		GridPane gCrust = new GridPane();
+		GridPane gMTop = new GridPane();
+		GridPane gMeatx = new GridPane();
+		GridPane gVeg = new GridPane();
+		GridPane gVegX = new GridPane();
+		GridPane gBev = new GridPane();
+		GridPane gDop = new GridPane();
+		GridPane gCheese = new GridPane();
+		GridPane gBevSize = new GridPane();
+				
+		gCenter.setHgap(10);
+		gCenter.setVgap(10);
+		gCenter.setAlignment(Pos.CENTER);
+				
+		gBottom.setHgap(10);
+		gBottom.setAlignment(Pos.CENTER);
+				
+		// Section Labels
+		Label lblSize = new Label("Size: ");
+		Label lblCrust = new Label("Crust: \n\nOnly 4 TOTAL toppings allowed");
+		Label lblRqst = new Label("Special Requests: ");
+		Label lblDop = new Label("Delivery or Pick-up: ");
+				
+		TextArea taRqst = new TextArea();
+		taRqst.setPrefHeight(10);
+		taRqst.setPrefWidth(50);
+		taRqst.setWrapText(true);
+				
+		NumberFormat formatter = NumberFormat.getCurrencyInstance();
+		
+		// Pizza Size Check Box
+		Label lblPriceS = new Label(formatter.format(priceSmall));
+		Label lblPriceM = new Label(formatter.format(priceMedium));
+		Label lblPriceL = new Label(formatter.format(priceLarge));
+		Label lblPriceXL = new Label(formatter.format(priceXLarge));
+				
+		CheckBox cbSmall = new CheckBox("Small\n(4 Slices)\n" + lblPriceS.getText());
+		CheckBox cbMedium = new CheckBox("Medium\n(6 Slices)\n"+ lblPriceM.getText());
+		CheckBox cbLarge = new CheckBox("Large\n(8 Slices)\n" + lblPriceL.getText());
+		CheckBox cbXLarge = new CheckBox("X-Large\n(10 Slices)\n" + lblPriceXL.getText());
+		
+		cbSmall.setOnAction(smallChecked -> {
+			
+			if (cbSmall.isSelected())
+			{
+				cbMedium.setDisable(true);
+				cbLarge.setDisable(true);
+				cbXLarge.setDisable(true);
+				
+			}
+			else
+			{
+				cbMedium.setDisable(false);
+				cbLarge.setDisable(false);
+				cbXLarge.setDisable(false);
+			}
+			
+		});
+				
+		cbMedium.setOnAction(smallChecked -> {
+			
+			if (cbMedium.isSelected())
+			{
+				cbSmall.setDisable(true);
+				cbLarge.setDisable(true);
+				cbXLarge.setDisable(true);
+				
+			}
+			else
+			{
+				cbSmall.setDisable(false);
+				cbLarge.setDisable(false);
+				cbXLarge.setDisable(false);
+			}
+			
+		});
+		
+		cbLarge.setOnAction(smallChecked -> {
+			
+			if (cbLarge.isSelected())
+			{
+				cbSmall.setDisable(true);
+				cbMedium.setDisable(true);
+				cbXLarge.setDisable(true);
+				
+			}
+			else
+			{
+				cbSmall.setDisable(false);
+				cbMedium.setDisable(false);
+				cbXLarge.setDisable(false);
+			}
+			
+		});
+		
+		cbXLarge.setOnAction(smallChecked -> {
+
+			if (cbXLarge.isSelected())
+			{
+				cbSmall.setDisable(true);
+				cbMedium.setDisable(true);
+				cbLarge.setDisable(true);
+				
+			}
+			else
+			{
+				cbSmall.setDisable(false);
+				cbMedium.setDisable(false);
+				cbLarge.setDisable(false);
+			}
+			
+		});
+		
+		gSize.add(cbSmall, 0, 0);
+		gSize.add(cbMedium, 3, 0);
+		gSize.add(cbLarge, 6, 0);
+		gSize.add(cbXLarge, 9, 0);
+		gSize.setHgap(2);
+		gSize.setVgap(2);
+				
+		// Crust CheckBox
+		Label lblPriceT = new Label(formatter.format(priceCrustThin));
+		Label lblPriceSC = new Label(formatter.format(priceCrustStuff));
+				
+		CheckBox cbOrig = new CheckBox("Original");
+		CheckBox cbThin = new CheckBox("Thin\n" + lblPriceT.getText());		
+		CheckBox cbSc = new CheckBox("Stuffed\n" + lblPriceSC.getText());
+			
+		// Handling checkbox events to allow only one crust
+		cbOrig.setOnAction(originalChecked -> {
+			
+			if (cbOrig.isSelected())
+			{
+				cbThin.setDisable(true);
+				cbSc.setDisable(true);
+			}
+			else
+			{
+				cbThin.setDisable(false);
+				cbSc.setDisable(false);
+			}
+			
+		});
+		
+		cbThin.setOnAction(thinChecked -> {
+			
+			if (cbThin.isSelected())
+			{
+				cbOrig.setDisable(true);
+				cbSc.setDisable(true);
+			}
+			else
+			{
+				cbOrig.setDisable(false);
+				cbSc.setDisable(false);
+			}
+			
+		});
+		
+		cbSc.setOnAction(stuffChecked -> {
+			
+			if (cbSc.isSelected())
+			{
+				cbThin.setDisable(true);
+				cbOrig.setDisable(true);
+			}
+			else
+			{
+				cbThin.setDisable(false);
+				cbOrig.setDisable(false);
+			}
+			
+		});
+		
+		// Add Check Box to Crust pane
+		gCrust.add(cbOrig, 0, 0);
+		gCrust.add(cbThin, 6, 0);
+		gCrust.add(cbSc, 3, 0);
+		gCrust.setVgap(2);
+		gCrust.setHgap(2);
+				
+		Label lblC = new Label("Cheese:");
+		
+		Label lblXCheeseP = new Label(formatter.format(priceCheeseExtra));
+		Label lblMozP = new Label(formatter.format(priceCheeseMoz));
+				
+		CheckBox cbCheese = new CheckBox("Cheese");
+		CheckBox cbXCheese = new CheckBox("Extra Cheese\n+" + lblXCheeseP.getText());
+		CheckBox cbMoz = new CheckBox("Mozarella\n+" + lblMozP.getText());
+		
+		cbCheese.setOnAction(cheeseChecked -> {
+			
+			if (cbCheese.isSelected())
+			{
+				++cheeseTopCount;
+				if (cheeseTopCount == 1)
+					orderCheese1 = "Cheese";
+			}
+			else
+			{
+				--cheeseTopCount;
+			}
+			
+		});
+		
+		cbXCheese.setOnAction(extraChecked -> {
+			
+			if(cbXCheese.isSelected())
+				++cheeseTopCount;
+			else
+				--cheeseTopCount;
+			
+		});
+		
+		cbMoz.setOnAction(mozChecked -> {
+			
+			if(cbMoz.isSelected())
+				++cheeseTopCount;
+			else
+				--cheeseTopCount;
+			
+		});
+				
+		gCheese.add(cbCheese, 0, 0);
+		gCheese.add(cbXCheese, 3, 0);
+		gCheese.add(cbMoz, 6, 0);
+		
+		// Meat Topping's Check Box
+		CheckBox cbPep = new CheckBox("Pepperoni");
+		CheckBox cbChees = new CheckBox("Three-Cheese");
+		CheckBox cbSaus = new CheckBox("Sausage");
+		CheckBox cbChic = new CheckBox("Chicken");
+		CheckBox cbBeef = new CheckBox("Beef");
+		CheckBox cbMeat = new CheckBox("Meat Ball");
+		CheckBox cbHam = new CheckBox("Ham");
+		CheckBox cbBacon = new CheckBox("Bacon");
+		
+		cbPep.setOnAction(pepChecked -> {
+			
+			if (cbPep.isSelected())
+				++meatTopCount;
+			else
+				--meatTopCount;
+			
+		});
+		
+		cbChees.setOnAction(cheesChecked -> {
+			
+			if (cbChees.isSelected())
+				++meatTopCount;
+			else
+				--meatTopCount;
+			
+		});
+		
+		cbSaus.setOnAction(sausChecked -> {
+
+			if (cbSaus.isSelected())
+				++meatTopCount;
+			else
+				--meatTopCount;
+			
+		});
+		
+		cbChic.setOnAction(chicChecked -> {
+
+			if (cbChic.isSelected())
+				++meatTopCount;
+			else
+				--meatTopCount;
+			
+		});		
+		
+		cbBeef.setOnAction(beefChecked -> {
+
+			if (cbBeef.isSelected())
+				++meatTopCount;
+			else
+				--meatTopCount;
+			
+		});
+		
+		cbMeat.setOnAction(meatChecked -> {
+
+			if (cbMeat.isSelected())
+				++meatTopCount;
+			else
+				--meatTopCount;
+			
+		});
+
+		cbHam.setOnAction(hamChecked -> {
+
+			if (cbHam.isSelected())
+				++meatTopCount;
+			else
+				--meatTopCount;
+			
+		});		
+		
+		cbBacon.setOnAction(baconChecked -> {
+
+			if (cbBacon.isSelected())
+				++meatTopCount;
+			else
+				--meatTopCount;
+			
+		});		
+		
+		Label lblTwoP = new Label(formatter.format(priceMeatTwo));
+		Label lblThreeP = new Label(formatter.format(priceMeatThree));
+		Label lblMTop = new Label("Meat Toppings: \n2 toppings: +" + lblTwoP.getText() + "\n3 toppings: +" + lblThreeP.getText());
+				
+		// Add Check Box to Meat Topping pane
+		gMTop.add(cbPep, 0, 0);
+		gMTop.add(cbChees, 3, 0);
+		gMTop.add(cbSaus, 6, 0);
+		gMTop.add(cbChic, 0, 1);
+		gMTop.add(cbBeef, 3, 1);
+		gMTop.add(cbMeat, 6, 1);
+		gMTop.add(cbHam, 0, 2);
+		gMTop.add(cbBacon, 3, 2);
+		gMTop.setHgap(2);
+		gMTop.setVgap(2);
+			
+		// Veggie Topping Check Box
+		CheckBox cbRedO = new CheckBox("Red Onion");
+		CheckBox cbBlkO = new CheckBox("Black Olive");
+		CheckBox cbMush = new CheckBox("Mushroom");
+		CheckBox cbSpin = new CheckBox("Spinach");
+		CheckBox cbGPep = new CheckBox("Green Pepper");
+		CheckBox cbBPep = new CheckBox("Banana Pepper");
+		CheckBox cbPine = new CheckBox("Pineapple");
+		CheckBox cbJalp = new CheckBox("Jalapeno Pepper");
+		CheckBox cbToma = new CheckBox("Tomatoes");
+				
+		cbRedO.setOnAction(redChecked -> {
+			
+			if(cbRedO.isSelected())
+				++vegTopCount;
+			else
+				--vegTopCount;
+			
+		});
+		
+		cbBlkO.setOnAction(blackChecked -> {
+	
+			if(cbBlkO.isSelected())
+				++vegTopCount;
+			else
+				--vegTopCount;
+			
+		});
+		
+		cbMush.setOnAction(mushroomChecked -> {
+			
+			if(cbMush.isSelected())
+				++vegTopCount;
+			else
+				--vegTopCount;
+			
+		});
+		
+		cbSpin.setOnAction(spinachChecked -> {
+			
+			if(cbSpin.isSelected())
+				++vegTopCount;
+			else
+				--vegTopCount;
+			
+		});		
+		
+		cbGPep.setOnAction(greenPepChecked -> {
+			
+			if(cbGPep.isSelected())
+				++vegTopCount;
+			else
+				--vegTopCount;
+			
+		});	
+		
+		cbBPep.setOnAction(blackPepChecked -> {
+			
+			if(cbBPep.isSelected())
+				++vegTopCount;
+			else
+				--vegTopCount;
+			
+		});
+		
+		cbPine.setOnAction(pineChecked -> {
+			
+			if(cbPine.isSelected())
+				++vegTopCount;
+			else
+				--vegTopCount;
+			
+		});
+		
+		cbJalp.setOnAction(jalChecked -> {
+			
+			if(cbJalp.isSelected())
+				++vegTopCount;
+			else
+				--vegTopCount;
+			
+		});
+		
+		cbToma.setOnAction(tomaChecked -> {
+			
+			if(cbToma.isSelected())
+				++vegTopCount;
+			else
+				--vegTopCount;
+			
+		});
+		
+		// Add Check Box to 
+		gVeg.add(cbRedO, 0, 0);
+		gVeg.add(cbBlkO, 3, 0);
+		gVeg.add(cbMush, 6, 0);
+		gVeg.add(cbSpin, 0, 1);
+		gVeg.add(cbGPep, 3, 1);
+		gVeg.add(cbBPep, 6, 1);
+		gVeg.add(cbPine, 0, 2);
+		gVeg.add(cbJalp, 3, 2);
+		gVeg.add(cbToma, 6, 2);
+		gVeg.setHgap(2);
+		gVeg.setVgap(2);
+				
+		Label lblVTwoP = new Label(formatter.format(priceVegTwo));
+		Label lblVThreeP = new Label(formatter.format(priceVegThree));
+		Label lblVeg = new Label("Veggetable Toppings: \n2 toppings: +" + lblVTwoP.getText() + "\n3 toppings: +" + lblVThreeP.getText());
+			
+		// Beverage Check Box
+		CheckBox cbCoke = new CheckBox("Coca-Cola");
+		CheckBox cbZero = new CheckBox("Coca-Cola Zero");
+		CheckBox cbDiet = new CheckBox("Diet Coca-Cola");
+		CheckBox cbSprt = new CheckBox("Sprite");
+		CheckBox cbFant = new CheckBox("Fanta Orange");
+				
+		gBev.add(cbCoke, 0, 0);
+		gBev.add(cbZero, 3, 0);
+		gBev.add(cbDiet, 6, 0);
+		gBev.add(cbSprt, 0, 1);
+		gBev.add(cbFant, 3, 1);
+		gBev.setHgap(2);
+		gBev.setVgap(2);
+		
+		Label lblBev = new Label("Beverage: ");
+		
+		Label lblBevSize = new Label("Beverage\nSize: ");
+		
+		Label lblSmallP = new Label(formatter.format(priceBevSmall));
+		Label lblMediumP = new Label(formatter.format(priceBevMedium));
+		Label lblLargeP = new Label(formatter.format(priceBevLarge));
+		
+		CheckBox cbBevSmall = new CheckBox("Small\n" + lblSmallP.getText());
+		CheckBox cbBevMedium = new CheckBox("Medium\n" + lblMediumP.getText());
+		CheckBox cbBevLarge = new CheckBox("Large\n" + lblLargeP.getText());
+		
+		gBevSize.add(cbBevSmall, 0, 0);
+		gBevSize.add(cbBevMedium, 3, 0);
+		gBevSize.add(cbBevLarge, 6, 0);
+		
+		
+		// Delivery/Pickup Check Box
+		Label lblDelP = new Label(formatter.format(priceDeliv));
+		CheckBox cbDel = new CheckBox("Delivery \n+" + lblDelP.getText());
+		CheckBox cbPic = new CheckBox("Pick-up");
+		
+		
+				
+		gDop.add(cbDel, 0, 0);
+		gDop.add(cbPic, 1, 0);
+		gDop.setHgap(2);
+		gDop.setVgap(2);
+				
+		// Body Grid Pane - Add labels and grid panes
+		gCenter.add(lblSize, 0, 0);
+		gCenter.add(gSize, 1, 0);
+		gCenter.add(lblCrust, 0, 1);
+		gCenter.add(gCrust, 1, 1);
+				
+		gCenter.add(lblC, 0, 2);
+		gCenter.add(gCheese, 1, 2);
+				
+		gCenter.add(lblMTop, 0,3);
+		gCenter.add(gMTop, 1, 3);//
+		gCenter.add(lblVeg, 0, 4);
+		gCenter.add(gVeg, 1, 4);
+		gCenter.add(lblRqst, 0, 5);
+		gCenter.add(taRqst, 1, 5);
+		gCenter.add(lblBev, 0, 6);
+		gCenter.add(gBev, 1, 6);
+		gCenter.add(lblBevSize, 0, 7);
+		gCenter.add(gBevSize, 1, 7);
+		gCenter.add(lblDop, 0, 8);
+		gCenter.add(gDop, 1, 8);
+		
+				
+		Button btBack = new Button("Back");
+		Button btSub = new Button("Submit");
+		
+		btBack.setOnAction(backPressed -> {
+			
+			bPane.getChildren().clear();
+			bPane.setCenter(customerHome());
+			
+			meatTopCount = 0;
+			vegTopCount = 0;
+			cheeseTopCount = 0;
+			
+		});
+		
+		btSub.setOnAction(submitPressed -> {
+			
+			topCount = meatTopCount + cheeseTopCount + vegTopCount;
+			
+			if (topCount > 4)
+			{
+				Text top = new Text("More than 4 topping's selected");
+				top.setFill(Color.RED);
+				
+				//gBottom.add(new Label("More than 4 topping's selected"), 0, 0);
+				bPane.setBottom(top);
+				bPane.setAlignment(top, Pos.TOP_CENTER);
+				
+				
+			}
+			else
+			{
+				bPane.setBottom(new Label());
+				
+			}
+			
+			
+			
+		});
+		
+		gBottom.add(btBack, 0, 0);
+		gBottom.add(btSub, 3, 0);
+		gBottom.setHgap(10);
+		gBottom.setVgap(10);
+				
+		gCenter.add(gBottom, 1, 9);
+				
+		// Set Border Pane with grid pane's
+		bPane.setCenter(gCenter);
+		bPane.setTop(customerInfoDuringOrder());
+				
+		return bPane;
+
+	}
+	
+	
+	public static void main(String[] args)
+	{
+		launch(args);
+	}
+
+}
