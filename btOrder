@@ -586,6 +586,8 @@ public class Base3 extends Application{
 			bPane.getChildren().clear();
 
 			bPane.setCenter(orderMenuCustom());
+			
+			total = 0;
 
 			
 
